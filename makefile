@@ -3,10 +3,10 @@ LD_LIBRARY_PATH = .
 TARGET = msp430g2452
 CC = msp430-gcc
 VPATH = /home/macrobull/lib/msp430/include
-DEFINES = SMCLK_FREQ=1000000
+DEFINES = SMCLK_FREQ=16000000
 CFLAGS = -mmcu=$(TARGET) -I$(VPATH) -g -D$(DEFINES)
 OBJ = ed.o sqr_gen.o disp.o capture.o pwm/pwm.o
-#OBJ = cap_test.o
+#OBJ = plus_test.o
 #LDSCRIPTS = test.x
 
 main: clean clear out.elf

@@ -1,27 +1,33 @@
 #include <msp430.h>
 #include <stdint.h>
 
-#include "pwm/pwm.h"
-
-#include "def/perip/g2452.h"
-#include "def/pin/exp430g2.h"
-
-
-#define	SQR_OUT	5
-#define	SQR_OUT_BIT	BIT5
+uint16_t period_delta;
 
 void gen_init(){
-	PWM0->OUT0 = SQR_OUT;
-	PWM_enable(PWM0, SMCLK, UP, BIT0, 0);
-	P1SEL &= ~SQR_OUT_BIT;
+	
+	P1DIR |=BIT1;
+	P1SEL |= BIT1;
+	
+	TACTL = TASSEL_2 + MC_2;
+	CCTL0 = OUTMOD_4;
+
 }
 
-void gen_start(uint16_t freq){
-	P1SEL |= SQR_OUT_BIT;
-	PWM_setter(PWM0, 0, (uint16_t)((SMCLK_FREQ / (uint32_t)freq + 1) >> 1), TOGGLE);
+void gen_start(){
+	CCTL0 |= CCIE;
+}
+
+void gen_set(uint16_t freq){
+	period_delta = (uint16_t)((SMCLK_FREQ / (uint32_t)freq + 1) >> 1);
 }
 
 void gen_stop(){
-	P1SEL &= ~SQR_OUT_BIT;
+	CCTL0 &= ~CCIE;
 }
-	
+
+
+#pragma vector=TIMER0_A0_VECTOR
+__interrupt void Timer_A (void)
+{
+	CCR0 += period_delta;
+}

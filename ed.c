@@ -8,21 +8,24 @@
 
 void main(){
 	WDT_DISABLE;
-	BC1MSET;
+	BC16MSET;
 	
-	display_init();
 	gen_init();
-	gen_start(1000);
 	cap_init();
+	display_init();
+	gen_start();
 	
 	
 	_EINT();
 	
-	
+	uint16_t i=200;
 	while (1){
-		
-		display(freq_query()/100);
+		i++;
+		if (i>800) i=200;
+		gen_set(i);
+		__delay_cycles(300000);
 	}
+	
 	
 	_BIS_SR(CPUOFF);
 }
