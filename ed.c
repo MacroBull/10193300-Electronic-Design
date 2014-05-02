@@ -4,24 +4,26 @@
 #include "wdt.h"
 #include "calib_val.h"
 
-#include "misc.h"
 
 void main(){
+	
 	WDT_DISABLE;
 	BC16MSET;
 	
 	gen_init();
 	cap_init();
 	display_init();
-	gen_start();
 	
 	
 	_EINT();
 	
+	
+	gen_start();
+	
 	uint16_t i=200;
 	while (1){
 		i++;
-		if (i>800) i=200;
+		if (i>3000) i=200;
 		gen_set(i);
 		__delay_cycles(300000);
 	}

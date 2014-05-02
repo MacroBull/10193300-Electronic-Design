@@ -1,12 +1,14 @@
 #include <msp430.h>
 #include <stdint.h>
 
-uint16_t period_delta;
+#include "pin.h"
+
+uint16_t period_inc;
 
 void gen_init(){
 	
-	P1DIR |=BIT1;
-	P1SEL |= BIT1;
+	P1DIR |= SQR_OUT;
+	P1SEL |= SQR_OUT;
 	
 	TACTL = TASSEL_2 + MC_2;
 	CCTL0 = OUTMOD_4;
@@ -18,7 +20,7 @@ void gen_start(){
 }
 
 void gen_set(uint16_t freq){
-	period_delta = (uint16_t)((SMCLK_FREQ / (uint32_t)freq + 1) >> 1);
+	period_inc = (uint16_t)((SMCLK_FREQ / (uint32_t)freq + 1) >> 1);
 }
 
 void gen_stop(){
@@ -27,7 +29,7 @@ void gen_stop(){
 
 
 #pragma vector=TIMER0_A0_VECTOR
-__interrupt void Timer_A (void)
+__interrupt void ccr0_inc (void)
 {
-	CCR0 += period_delta;
+	CCR0 += period_inc;
 }
