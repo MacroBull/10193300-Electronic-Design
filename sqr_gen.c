@@ -11,12 +11,11 @@ void gen_init(){
 	P1SEL |= SQR_OUT;
 	
 	TACTL = TASSEL_2 + MC_2;
-	CCTL0 = OUTMOD_4;
 
 }
 
 void gen_start(){
-	CCTL0 |= CCIE;
+	CCTL0 = OUTMOD_4 + CCIE;
 }
 
 void gen_set(uint16_t freq){
@@ -24,7 +23,7 @@ void gen_set(uint16_t freq){
 }
 
 void gen_stop(){
-	CCTL0 &= ~CCIE;
+	CCTL0 &= ~(OUTMOD_4 + CCIE);
 }
 
 
