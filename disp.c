@@ -17,9 +17,9 @@
 #include "pin.h"
 
 
-#define DISP_INTV 0.7
+#define DISP_INTV 0.1
 
-#define MAX_DISP_PERIOD ( (int)((SMCLK_FREQ >>16)/3*DISP_INTV) )
+#define MAX_DISP_PERIOD ( (int)((SMCLK_FREQ >>16)*DISP_INTV) )
 
 uint8_t disp_digit=0;
 uint16_t disp_cnt, disp_shadow;

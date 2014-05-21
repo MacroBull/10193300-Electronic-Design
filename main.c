@@ -13,8 +13,10 @@
 
 void update_display(){
 	
-	if (touch_pressed(&key1))
-	display(1111);
+	if (touch_pressed(&key0))
+	display(9900);
+	else if (touch_pressed(&key1))
+	display(9911);
 	else 
 	display(freq_query());
 }
@@ -24,8 +26,7 @@ void main(){
 	BC16MSET;
 	WDT_DISABLE;
 	
-	P1DIR |= BIT1;
-	//gen_init();
+	gen_init();
 	display_init();
 	touch_init();
 	cap_init();

@@ -8,8 +8,6 @@
 #define COLDDOWN 20
 
 
-
-
 void isr_handle(touch_key_handle key){
 	key->counter = TAR;
 	
