@@ -24,12 +24,20 @@ __interrupt void Timer_A_Multifunction(void)
 	switch( TA0IV )
 	{
 		case  2: 
+// 			TACTL &= ~TAIFG;
+			/*P1IE = 0;
+			TACCTL1 &= ~CCIFG;
+			_EINT();*/ // makes CCR0 & display in real time
 			ccr1_isr();
 			break;
 		case  4: 
 // 			ccr2_int();
 			break;
 		case 10: 
+// 			TACTL &= ~TAIFG;
+			/*P1IE = 0;
+			TACCTL1 &= ~CCIFG;
+			_EINT();*/ // makes CCR0 & display in real time
 			ta_isr();
 			break;
 	}
@@ -39,6 +47,6 @@ __interrupt void Timer_A_Multifunction(void)
 
 void ta_isr(){
 	calc_freq();
-	update_display();
-	toggle_touch_output();
+	main_action();
+ 	toggle_touch_output();
 }

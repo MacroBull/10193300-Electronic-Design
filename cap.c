@@ -17,7 +17,7 @@
 
 uint16_t cc0, cc1, cc_delta, cc_cnt;
 uint32_t cc_sum;
-uint32_t freq = 0, cnt; //freq == 0 : invalid value
+uint32_t freq; //freq == 0 : invalid value
 
 
 void cap_init(){
@@ -43,9 +43,16 @@ void ccr1_isr(){
 
 void calc_freq(){
 	
-	freq = ( SMCLK_FREQ  * cc_cnt + (cc_sum >> 1) ) / cc_sum;
+// 	freq = SMCLK_FREQ;
+// 	freq = ( freq  * cc_cnt + (cc_sum >> 1) ) / cc_sum;
 	
-	cc_sum = 0;
+	
+	freq = SMCLK_FREQ / cc_delta;
+	/*
+	if (cc_cnt > 20){
+		cc_cnt = 0;
+		cc_sum = 0;
+	}*/
 // 	appendData(MAXINT);
 	
 }

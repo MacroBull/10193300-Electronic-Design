@@ -4,10 +4,20 @@
 #ifndef __HEADER_H
 #define __HEADER_H
 
+
+extern void main_action();
+
 //Display
+
+typedef uint8_t disp_arr[3];
+
+
 extern void display_init();
-extern void display(uint16_t n);
-extern void update_display();
+extern void display(disp_arr n);
+extern uint8_t *int2disp(uint16_t n);
+extern uint8_t *note2disp(uint16_t n);
+extern uint16_t get_note();
+
 
 //Input capture
 extern void cap_init();
@@ -22,6 +32,7 @@ extern void gen_stop();
 
 //Touch key
 typedef struct {
+	char pressed;
 	uint8_t pin;
 	uint16_t counter;
 	uint16_t key_cd;
@@ -33,8 +44,10 @@ typedef touch_key *touch_key_handle;
 touch_key key0, key1;
 
 extern void touch_init();
+extern char touch_down(touch_key_handle key);
 extern char touch_pressed(touch_key_handle key);
 extern void toggle_touch_output();
+extern void touch_test();
 
 //ISR proxy
 extern void port1_isr();

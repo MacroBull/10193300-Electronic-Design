@@ -5,27 +5,26 @@
 #include "header.h"
 
 
-#define MIN_INT (SMCLK_FREQ / 7200 ) //+20%
-// #define MIN_INT (SMCLK_FREQ / 4 / 7200 ) //+20%
-#define MAX_INT (SMCLK_FREQ * 3 / 160 )  //-20%
+#define MAXINT 0x7fff
 
-#define MAX_CCNT 16
+#define MIN_INT (SMCLK_FREQ / 8000 ) 
+#define MAX_INT MAXINT
 
-#define MAXINT 0xffff
 
-uint16_t cc0, cc1, cc_delta, cc_cnt;
-uint32_t freq; //freq == 0 : invalid value
+uint16_t cc0, cc1, cc_delta;
+uint16_t int_cnt;
+uint32_t cc_cnt, freq, freq_shadow; //freq == 0 : invalid value
 
 
 void cap_init(){
 	
 	P1DIR &= ~CAP_IN;
 	P1SEL |= CAP_IN;
-	CCTL1 = CM_1 + CCIS_0 + CAP + CCIE; // rising edge
+	CCTL1 = CM_2 + CCIS_0 + CAP + CCIE; // rising edge
 }
 
 uint16_t freq_query(){ // wrapper
-	return (uint16_t)freq;
+	return (uint16_t)freq_shadow;
 }
 
 
@@ -40,8 +39,16 @@ void ccr1_isr(){
 }
 
 void calc_freq(){
-	freq = cc_cnt;
-	freq *=SMCLK_FREQ;
-	freq >>= 16;
-	cc_cnt = 0;
+	
+	int_cnt ++;
+	if ( cc_cnt * int_cnt >3000){
+		freq = ((1<<8) + SMCLK_FREQ) >> 16;
+		freq = (freq * cc_cnt + (int_cnt >> 1)) / int_cnt;
+	}
+	if ((cc_cnt > 0x800000) || (int_cnt >60)){
+		freq_shadow = freq;
+		cc_cnt = 0;
+		int_cnt = 0;
+		freq = 0;
+	}
 }

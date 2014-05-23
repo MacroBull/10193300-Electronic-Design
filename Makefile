@@ -6,7 +6,7 @@ OBJ = main.o touch_sick.o disp.o cap_cnt.o generator.o isr_proxy.o
 CC = msp430-gcc
 VPATH = ${LIBMSP430_MACROBULL}/src
 export CPATH = ${LIBMSP430_MACROBULL}/include
-CFLAGS = -mmcu=$(TARGET) -D $(GLB_DFN)
+CFLAGS = -mmcu=$(TARGET) -D $(GLB_DFN) -O2
 
 
 build: clean out.elf
@@ -17,7 +17,7 @@ debug: build
 
 install: out.elf
 # 	echo "opt fet_block_size 1024" > ~/.mspdebug
-	echo "opt fet_block_size 256" > ~/.mspdebug
+	echo "opt fet_block_size 32" > ~/.mspdebug
 	-mspdebug rf2500 "prog out.elf"
 
 

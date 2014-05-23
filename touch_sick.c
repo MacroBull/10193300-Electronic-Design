@@ -5,7 +5,7 @@
 #include "pin.h"
 #include "header.h"
 
-#define COLDDOWN 20
+#define COLDDOWN 30
 
 
 void isr_handle(touch_key_handle key){
@@ -17,15 +17,22 @@ void isr_handle(touch_key_handle key){
 }
 
 void update(touch_key_handle key){
-	if (0 == key->counter) 
+	if (0 == key->counter) {
+		if (0==key->key_cd) key->pressed = 1;
 		key->key_cd = COLDDOWN;
+	}
 	else 
 		if (key-> key_cd > 0) key->key_cd --;
 	key->counter = 0;
 }
 
+char touch_down(touch_key_handle key){
+	return key-> key_cd > 0;
+}
 char touch_pressed(touch_key_handle key){
-	return (key-> key_cd > 0);
+	char tmp = key-> pressed;
+	key-> pressed = 0;
+	return tmp;
 }
 
 
@@ -37,8 +44,8 @@ void touch_init(){
 	P1DIR &= ~(TOUCH_PIN0 + TOUCH_PIN1);
 	P1DIR |= TOUCH_SOUT;
 	P1IE = 0;
-// 	P1IES &= ~(TOUCH_PIN0 + TOUCH_PIN1);
-	P1IES |= (TOUCH_PIN0 + TOUCH_PIN1);
+	P1IES &= ~(TOUCH_PIN0 + TOUCH_PIN1);
+// 	P1IES |= (TOUCH_PIN0 + TOUCH_PIN1);
 	
 	TACTL = TASSEL_2 + MC_2 + TAIE;
 	
@@ -63,4 +70,12 @@ void port1_isr(){
 	
 }
 
+void touch_test(){
+	char key = 0;
+	if (touch_down(&key0))
+		key +=100;
+	if (touch_down(&key1))
+		key +=20;
+	display(int2disp(key));
+}
 
