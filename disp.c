@@ -89,17 +89,18 @@ uint8_t *int2disp(uint16_t n){
 
 }
 
-uint8_t *note2disp(uint16_t n){
+uint8_t *note2disp(uint16_t freq){
 	
-	#define OCT_OFFSET 1
 	
 	const uint16_t noteFreqs[] = {
-		0, 1976, 2093, 2349, 2637, 2794, 3136, 3520, 3951, 4186, 0xff
-		
+		4186, 4699, 5274, 5588, 6272, 7040, 7902, 0x7fff
 	};
+	
+	#define OCT_OFFSET 7
+	#define DISP_LOW 0b11110111
+	#define DISP_HIGH 0b11111110
+	
 	const uint8_t noteDisp[] = {
-		0b11110111,
-		0b11110111,
 		SEG_DISP_CA_7_NUM[0xc],
 		SEG_DISP_CA_7_NUM[0xd],
 		SEG_DISP_CA_7_NUM[0xe],
@@ -107,25 +108,32 @@ uint8_t *note2disp(uint16_t n){
 		0b11000010,
 		SEG_DISP_CA_7_NUM[0xa],
 		SEG_DISP_CA_7_NUM[0xb],
-		0b11111110,
-		0b11111110
+		DISP_HIGH,
 	};
 	
-	uint8_t note = 0;
-	while (n>= (noteFreqs[note] >> OCT_OFFSET)) note ++;
-	if ((n << (OCT_OFFSET + 1)) < noteFreqs[note] + noteFreqs[note-1]) note--;
+	freq++;
+	uint8_t note = 0, oct = 0;
+	while ((freq << oct)< noteFreqs[0]) oct++;
+	freq = freq << oct;
+	while (freq> noteFreqs[note+1]) note++;
 	
-	tmp_arr[0] = noteDisp[note];
-	tmp_arr[1] = ~0;
-	tmp_arr[2] = 0b01001000;
-
-	note_output = note;
-	
-	if ((note_output <=1) || (note_output >=9))
+	if (oct > OCT_OFFSET - 3){
+		tmp_arr[0] = DISP_LOW;
+		tmp_arr[1] = SEG_DISP_CA_7_Z;
 		note_output = 0;
-	else 
-		note_output = noteFreqs[note] >> OCT_OFFSET;
-	
+	}
+	else if (oct < 1){
+		tmp_arr[0] = DISP_HIGH;
+		tmp_arr[1] = SEG_DISP_CA_7_Z;
+		note_output = 0;
+	}
+	else {
+		tmp_arr[0] = noteDisp[note];
+		tmp_arr[1] = SEG_DISP_CA_7_NUM[OCT_OFFSET - oct];
+		note_output = noteFreqs[note] >> oct;
+	}
+	tmp_arr[2] = 0b00101011; // 'n' for note
+
 	return tmp_arr;
 
 }

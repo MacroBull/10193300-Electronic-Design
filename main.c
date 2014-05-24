@@ -36,7 +36,6 @@ void main_action(){
 		case MODE_NOTE:
 			display(note2disp(input_freq));
 			output_freq = get_note();
-// 			if (0== output_freq) output_freq = input_freq;
 			break;
 	}
 	
