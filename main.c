@@ -19,6 +19,8 @@ uint16_t input_freq, output_freq, last_output_freq, disp_freq;
 void main_action(){
 	
 // 	touch_test();
+// 	display(int2disp(key1.counter* 10) );
+	
 	if (touch_pressed(&key0))
 		mode = MODE_DIRECT;
 	else if (touch_pressed(&key1))

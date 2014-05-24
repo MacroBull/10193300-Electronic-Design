@@ -52,24 +52,24 @@ void display(disp_arr n){
 		disp_cnt = 0;
 	}
 	
-	P2OUT = SEG_DISP_CA_7_Z;
+// 	P2OUT = SEG_DISP_CA_7_Z;
 	switch (disp_digit){
 		case	0:
 			P1OUT &= ~DISP_O2;
-			P1OUT |= DISP_O0;
 			P2OUT = disp_shadow[0];
+			P1OUT |= DISP_O0;
 			disp_digit = 1;
 			break;
 		case	1:
 			P1OUT &= ~DISP_O0;
-			P1OUT |= DISP_O1;
 			P2OUT = disp_shadow[1];
+			P1OUT |= DISP_O1;
 			disp_digit = 2;
 			break;
 		case	2:
 			P1OUT &= ~DISP_O1;
-			P1OUT |= DISP_O2;
 			P2OUT = disp_shadow[2];
+			P1OUT |= DISP_O2;
 			disp_digit = 0;
 			break;
 	}
