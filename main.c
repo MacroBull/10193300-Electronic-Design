@@ -10,12 +10,12 @@
 #include "wdt.h"
 #include "header.h"
 
-#define MODE_DIRECT	0
-#define MODE_NOTE	1
-#define MODE_OFF	2
+#define MODE_DIRECT 0
+#define MODE_NOTE 1
+#define MODE_OFF 2
 
-#define JITTER_DELAY 80
-#define SWITCH_DELAY 160
+#define JITTER_DELAY 60
+#define SWITCH_DELAY 120
 
 char mode = MODE_DIRECT;
 
@@ -34,12 +34,15 @@ void main_action(){
 		mode = MODE_NOTE;
 	
 	if (click_pressed()){
+		click_disable();
+		counter = JITTER_DELAY;
+		
 		mode ^= MODE_OFF;
-		if (mode ^ MODE_OFF) display_enable();
+		if (mode < MODE_OFF) display_enable();
 		else display_disable();
 	}
 	
-	if (MODE_OFF ^ mode) {
+	if (mode < MODE_OFF) {
 		input_freq = freq_query();
 		
 		if (MODE_DIRECT == mode){
