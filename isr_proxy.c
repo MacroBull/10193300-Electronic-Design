@@ -7,7 +7,8 @@
 #pragma vector=PORT1_VECTOR
 __interrupt void Port_1_TouchKey(void)
 {
-	port1_isr();
+	touchEvent();
+	clickEvent();
 }
 
 

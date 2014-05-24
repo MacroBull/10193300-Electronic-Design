@@ -12,10 +12,17 @@
 
 #define MODE_DIRECT	0
 #define MODE_NOTE	1
+#define MODE_OFF	2
 
-char mode;
+#define JITTER_DELAY 80
+#define SWITCH_DELAY 160
+
+char mode = MODE_DIRECT;
 
 uint16_t input_freq, output_freq, last_output_freq, disp_freq;
+
+uint16_t counter;
+
 void main_action(){
 	
 // 	touch_test();
@@ -26,25 +33,44 @@ void main_action(){
 	else if (touch_pressed(&key1))
 		mode = MODE_NOTE;
 	
-// 	display(int2disp(mode * 10));
-	
-	input_freq = freq_query();
-	switch (mode){
-		case MODE_DIRECT:
-			display(int2disp(input_freq));
-			output_freq = input_freq;
-			if ((output_freq < 200) || (output_freq > 3000)) output_freq = 0;
-			break;
-		case MODE_NOTE:
-			display(note2disp(input_freq));
-			output_freq = get_note();
-			break;
+	if (click_pressed()){
+		mode ^= MODE_OFF;
+		if (mode ^ MODE_OFF) display_enable();
+		else display_disable();
 	}
 	
-	if ((0==last_output_freq)&&(0<output_freq)) gen_start();
-	if ((0<last_output_freq)&&(0==output_freq)) gen_stop();
-	if (output_freq) gen_set(output_freq);
+	if (MODE_OFF ^ mode) {
+		input_freq = freq_query();
+		
+		if (MODE_DIRECT == mode){
+			display(int2disp(input_freq));
+			if ((input_freq < 200) || (input_freq > 3000)) output_freq = 0;
+			else output_freq = input_freq;
+		}
+		else if (MODE_NOTE == mode){
+				display(note2disp(input_freq));
+				output_freq = get_note();
+		}
+	}
+	
+	if ((0==last_output_freq)&&(0<output_freq)) {
+		click_disable();
+		gen_start();
+	}
+	else if ((0<last_output_freq)&&(0==output_freq)) { 
+		gen_stop();
+		counter = SWITCH_DELAY;
+	}
 	last_output_freq = output_freq;
+	
+	if (output_freq) 
+		gen_set(output_freq);
+	else if (1 == counter)
+		click_enable();
+	else if (counter) 
+		counter--;
+	
+// 	WDT_GO;
 }
 
 void main(){
@@ -61,7 +87,10 @@ void main(){
 	
 	
 	last_output_freq = 1;
-	__delay_cycles(SMCLK_FREQ >> 1);
+	__delay_cycles(SMCLK_FREQ >> 2); // wait for stability
+	
+	display_enable();
+	
 // 	gen_set(4000);
 	
 	

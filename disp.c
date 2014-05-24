@@ -34,12 +34,21 @@ disp_arr disp_shadow, tmp_arr;
 
 void display_init(){
 	
-	P1DIR |= DISP_O0 + DISP_O1 +DISP_O2;
 	P2DIR = 0xff;
 	P2SEL = P2SEL2 = 0x0;
 	
 	TACTL |= TAIE;
 	
+}
+
+void display_enable(){
+	
+	P1DIR |= DISP_O0 + DISP_O1 +DISP_O2;
+}
+
+void display_disable(){
+	
+	P1DIR &= ~(DISP_O0 + DISP_O1 +DISP_O2);
 }
 
 void display(disp_arr n){
@@ -117,7 +126,7 @@ uint8_t *note2disp(uint16_t freq){
 	freq = freq << oct;
 	while (freq> noteFreqs[note+1]) note++;
 	
-	if (oct > OCT_OFFSET - 3){
+	if (oct > OCT_OFFSET - 4){
 		tmp_arr[0] = DISP_LOW;
 		tmp_arr[1] = SEG_DISP_CA_7_Z;
 		note_output = 0;

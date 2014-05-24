@@ -63,7 +63,7 @@ void toggle_touch_output(){
 	
 }
 
-void port1_isr(){
+void touchEvent(){
 //  	P1OUT ^= BIT1;
 	if (key0.pin & P1IFG) isr_handle(&key0);
 	if (key1.pin & P1IFG) isr_handle(&key1);

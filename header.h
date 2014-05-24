@@ -4,6 +4,9 @@
 #ifndef __HEADER_H
 #define __HEADER_H
 
+#define OUT_FREQ_MAX 3000
+#define OUT_FREQ_MIN 200
+
 
 extern void main_action();
 
@@ -13,6 +16,8 @@ typedef uint8_t disp_arr[3];
 
 
 extern void display_init();
+extern void display_enable();
+extern void display_disable();
 extern void display(disp_arr n);
 extern uint8_t *int2disp(uint16_t n);
 extern uint8_t *note2disp(uint16_t n);
@@ -47,10 +52,16 @@ extern void touch_init();
 extern char touch_down(touch_key_handle key);
 extern char touch_pressed(touch_key_handle key);
 extern void toggle_touch_output();
+extern void touchEvent();
 extern void touch_test();
 
+//Piezo click
+extern void click_enable();
+extern void click_disable();
+extern char click_pressed();
+extern void clickEvent();
+
 //ISR proxy
-extern void port1_isr();
 extern void ccr0_isr();
 extern void ccr1_isr();
 extern void ccr2_isr();

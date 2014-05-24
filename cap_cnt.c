@@ -7,8 +7,8 @@
 
 #define MAXINT 0x7fff
 
-#define MIN_INT (SMCLK_FREQ / 8000 ) 
-#define MAX_INT MAXINT
+#define MIN_INT (SMCLK_FREQ / OUT_FREQ_MAX / 2) 
+#define MAX_INT (SMCLK_FREQ / OUT_FREQ_MIN * 2)
 
 
 uint16_t cc0, cc1, cc_delta;
@@ -41,11 +41,11 @@ void ccr1_isr(){
 void calc_freq(){
 	
 	int_cnt ++;
-	if ( cc_cnt * int_cnt >3000){
+	if ( cc_cnt * int_cnt > 2000){
 		freq = ((1<<8) + SMCLK_FREQ) >> 16;
 		freq = (freq * cc_cnt + (int_cnt >> 1)) / int_cnt;
 	}
-	if ((cc_cnt > 0x800000) || (int_cnt >60)){
+	if ((cc_cnt > 0x800000) || (int_cnt >40)){
 		freq_shadow = freq;
 		cc_cnt = 0;
 		int_cnt = 0;

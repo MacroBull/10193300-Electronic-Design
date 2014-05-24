@@ -1,7 +1,7 @@
 TARGET = msp430g2452
 
 GLB_DFN = SMCLK_FREQ=15712623
-OBJ = main.o touch_sick.o disp.o cap_cnt.o generator.o isr_proxy.o
+OBJ = main.o touch_sick.o disp.o cap_cnt.o generator.o isr_proxy.o click.o
 
 CC = msp430-gcc
 VPATH = ${LIBMSP430_MACROBULL}/src
