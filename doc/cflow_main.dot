@@ -1,0 +1,119 @@
+digraph G {
+node [peripheries=2 style="filled,rounded" fontname="Vera Sans YuanTi Mono" color="#eecc80"];
+rankdir=LR;
+label="软件流程"
+
+
+subgraph flow_main {
+rank = same;
+node [color="#80ccee"];
+edge [color="#ee80cc"];
+initSysctl -> initPerip;
+initPerip -> delay;
+delay -> sleep;
+sleep -> ISR_proxy[ style="dashed"];
+}
+
+
+
+edge [color="#eecc80"];
+ISR_proxy -> {  Port_1_TouchKey CCR0_update TA0_Multifunction   }
+
+CCR0_update [shape=box];
+node [color="#eecc80" shape=ellipse];edge [color="#eecc80"];
+CCR0_update->ccr0_isr
+Port_1_TouchKey [shape=box];
+node [color="#eecc80" shape=ellipse];edge [color="#eecc80"];
+Port_1_TouchKey->touchEvent
+
+node [color="#eecc80" shape=ellipse];edge [color="#eecc80"];
+Port_1_TouchKey->clickEvent
+TA0_Multifunction [shape=box];
+node [color="#eecc80" shape=ellipse];edge [color="#eecc80"];
+TA0_Multifunction->ccr1_isr
+node [color="#eecc80" shape=ellipse];edge [color="#eecc80"];
+TA0_Multifunction->ta_isr
+node [color="#ccee80" shape=octagon];edge [color="#ccee80"];
+ta_isr->calc_freq
+node [color="#ccee80" shape=octagon];edge [color="#ccee80"];
+ta_isr->main_action
+node [color="#80ccee" shape=hexagon];edge [color="#80ccee"];
+main_action->touch_pressed
+node [color="#eecc80" shape=ellipse];edge [color="#eecc80"];
+touch_pressed->mode_change
+node [color="#80ccee" shape=hexagon];edge [color="#80ccee"];
+main_action->click_pressed
+node [color="#eecc80" shape=ellipse];edge [color="#eecc80"];
+click_pressed->click_disable
+node [color="#eecc80" shape=ellipse];edge [color="#eecc80"];
+check_valid_ouput->click_disable
+node [color="#eecc80" shape=ellipse];edge [color="#eecc80"];
+click_pressed->display_enable
+node [color="#eecc80" shape=ellipse];edge [color="#eecc80"];
+click_pressed->display_disable
+node [color="#eecc80" shape=ellipse];edge [color="#eecc80"];
+MODE_DIRECT_predicate->display
+node [color="#eecc80" shape=ellipse];edge [color="#eecc80"];
+MODE_NOTE_predicate->display
+node [color="#eecc80" shape=ellipse];edge [color="#eecc80"];
+MODE_DIRECT_predicate->int2disp
+node [color="#eecc80" shape=ellipse];edge [color="#eecc80"];
+MODE_NOTE_predicate->note2disp
+
+node [color="#eecc80" shape=ellipse];edge [color="#eecc80"];
+check_valid_ouput->gen_start
+node [color="#eecc80" shape=ellipse];edge [color="#eecc80"];
+check_valid_ouput->gen_stop
+node [color="#eecc80" shape=ellipse];edge [color="#eecc80"];
+dispatcher->gen_set
+node [color="#eecc80" shape=ellipse];edge [color="#eecc80"];
+dispatcher->click_enable
+node [color="#ccee80" shape=octagon];edge [color="#ccee80"];
+ta_isr->toggle_touch_output
+node [color="#80ccee" shape=hexagon];edge [color="#80ccee"];
+toggle_touch_output->update
+
+calc_freq [shape=box];
+cap_init [shape=box];
+ccr0_isr [shape=box];
+ccr1_isr [shape=box];
+clickEvent [shape=box];
+click_disable [shape=box];
+click_enable [shape=box];
+click_pressed [shape=box];
+display [shape=box];
+display_disable [shape=box];
+display_enable [shape=box];
+display_init [shape=box];
+freq_query [shape=box];
+gen_init [shape=box];
+gen_set [shape=box];
+gen_start [shape=box];
+gen_stop [shape=box];
+get_note [shape=box];
+initPerip [shape=box];
+
+node [color="#eecc80" shape=ellipse];edge [color="#eecc80"];
+initPerip->gen_init
+node [color="#eecc80" shape=ellipse];edge [color="#eecc80"];
+initPerip->display_init
+node [color="#80ccee" shape=ellipse];edge [color="#eecc80"];
+initPerip->touch_init
+node [color="#eecc80" shape=ellipse];edge [color="#eecc80"];
+initPerip->cap_init
+
+initSysctl [shape=box];
+int2disp [shape=box];
+// main_action [shape=box];
+note2disp [shape=box];
+ta_isr [shape=box];
+toggle_touch_output [shape=box];
+touchEvent [shape=box];
+touch_init [shape=box];
+update [shape=box];
+
+}
+
+
+
+

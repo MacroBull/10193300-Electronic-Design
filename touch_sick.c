@@ -5,10 +5,10 @@
 #include "pin.h"
 #include "header.h"
 
-#define COLDDOWN 30
+#define COLDDOWN 30	//防抖冷却时间
 
 
-void isr_handle(touch_key_handle key){
+void isr_handle(touch_key_handle key){ //记录定时器计数TAR
 	key->counter = TAR;
 	
 	P1IE &= ~(key->pin);
@@ -16,7 +16,7 @@ void isr_handle(touch_key_handle key){
 	
 }
 
-void update(touch_key_handle key){
+void update(touch_key_handle key){ //更新按键状态
 	if (0 == key->counter) {
 		if (0==key->key_cd) key->pressed = 1;
 		key->key_cd = COLDDOWN;
@@ -26,10 +26,10 @@ void update(touch_key_handle key){
 	key->counter = 0;
 }
 
-char touch_down(touch_key_handle key){
+char touch_down(touch_key_handle key){ //按键按下
 	return key-> key_cd > 0;
 }
-char touch_pressed(touch_key_handle key){
+char touch_pressed(touch_key_handle key){ //按键按过
 	char tmp = key-> pressed;
 	key-> pressed = 0;
 	return tmp;
@@ -51,7 +51,7 @@ void touch_init(){
 	
 }
 
-void toggle_touch_output(){
+void toggle_touch_output(){ //翻转输出, 上升沿有效
 	
 	P1OUT ^= TOUCH_SOUT;
 	

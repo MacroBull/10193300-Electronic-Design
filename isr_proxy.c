@@ -7,8 +7,8 @@
 #pragma vector=PORT1_VECTOR
 __interrupt void Port_1_TouchKey(void)
 {
-	touchEvent();
-	clickEvent();
+	touchEvent();	//检测触摸
+	clickEvent();	//检测敲击
 }
 
 
@@ -20,7 +20,7 @@ __interrupt void CCR0_update (void)
 
 // Timer_A3 Interrupt Vector (TA0IV) handler
 #pragma vector=TIMER0_A1_VECTOR
-__interrupt void Timer_A_Multifunction(void)
+__interrupt void TA0_Multifunction(void)
 {
 	switch( TA0IV )
 	{
@@ -46,8 +46,8 @@ __interrupt void Timer_A_Multifunction(void)
 }
 
 
-void ta_isr(){
-	calc_freq();
-	main_action();
- 	toggle_touch_output();
+inline void ta_isr(){
+	calc_freq();	//计算频率
+	main_action();	//主循环
+	toggle_touch_output();	//翻转触摸信号
 }
