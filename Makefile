@@ -1,6 +1,7 @@
 TARGET = msp430g2452
 
-GLB_DFN = SMCLK_FREQ=15712623
+# 手动校准后的实际时钟频率
+GLB_DFN = SMCLK_FREQ=15712623 
 OBJ = main.o touch_sick.o disp.o cap_cnt.o generator.o isr_proxy.o click.o
 
 CC = msp430-gcc
@@ -16,8 +17,8 @@ debug: build
 
 
 install: out.elf
-# 	echo "opt fet_block_size 1024" > ~/.mspdebug
-	echo "opt fet_block_size 32" > ~/.mspdebug
+	echo "opt fet_block_size 1024" > ~/.mspdebug
+# 	echo "opt fet_block_size 32" > ~/.mspdebug
 	-mspdebug rf2500 "prog out.elf"
 
 

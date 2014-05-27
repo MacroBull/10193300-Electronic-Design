@@ -1,7 +1,5 @@
 /*
- * 
  * https://github.com/MacroBull/10193300-Electronic-Design
- * 
  */
 
 #include <msp430.h>

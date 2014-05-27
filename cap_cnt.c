@@ -8,12 +8,12 @@
 #define MAXINT 0x7fff // 最大捕获等待间隔
 
 #define MIN_INT (SMCLK_FREQ / OUT_FREQ_MAX / 2) //最小间隔(带裕量)
-#define MAX_INT (SMCLK_FREQ / OUT_FREQ_MIN * 2) //最小间隔(带裕量)
+#define MAX_INT (SMCLK_FREQ / OUT_FREQ_MIN * 2) //最大间隔(带裕量)
 
 
 uint16_t cc0, cc1, cc_delta;	//捕获值, 捕获增量(间隔)
 uint16_t int_cnt;				//计数周期数
-uint32_t cc_cnt, freq, freq_shadow; //freq == 0 : invalid value //捕获计数数, 频率计算结果和询问影子
+uint32_t cc_cnt, freq, freq_shadow; //freq == 0 : invalid value //捕获计数数, 频率计算结果和查询影子
 
 
 void cap_init(){

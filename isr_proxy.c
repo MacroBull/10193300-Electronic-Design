@@ -25,20 +25,18 @@ __interrupt void TA0_Multifunction(void)
 	switch( TA0IV )
 	{
 		case  2: 
-// 			TACTL &= ~TAIFG;
-			/*P1IE = 0;
-			TACCTL1 &= ~CCIFG;
-			_EINT();*/ // makes CCR0 & display in real time
+			P1IE = 0;
+			TACCTL1 &= ~CCIE;
+			_EINT(); // makes CCR0 & display in real time
 			ccr1_isr();
 			break;
 		case  4: 
 // 			ccr2_int();
 			break;
 		case 10: 
-// 			TACTL &= ~TAIFG;
-			/*P1IE = 0;
-			TACCTL1 &= ~CCIFG;
-			_EINT();*/ // makes CCR0 & display in real time
+			P1IE = 0;
+			TACTL &= ~TAIE;
+			_EINT(); // makes CCR0 & display in real time
 			ta_isr();
 			break;
 	}

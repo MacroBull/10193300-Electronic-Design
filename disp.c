@@ -2,11 +2,11 @@
 #include <stdint.h>
 /*
  * 数码管引脚
- * 	CA1	B0	B5	CA2	CA3	B1
+ * 	CA1	A	F	CA2	CA3	B
  * 	6	7	8	9	10	11
  * PIN
  * 	1	2	3	4	5
- * 	B4	B3	DOT	B2	B6
+ * 	D	D	DOT	C	G
  *  
  * 
  */
@@ -144,6 +144,6 @@ uint8_t *note2disp(uint16_t freq){ //转换频率为对应音符
 
 }
 
-uint16_t get_note(){
+uint16_t get_note(){ //返回对应音符输出频率
 	return note_output;
 }
