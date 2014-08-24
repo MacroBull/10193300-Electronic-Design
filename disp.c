@@ -12,7 +12,7 @@
  */
 
 
-#include "seg_disp/8seg.h"	
+#include "driver/seg_disp/8seg.h"	
 
 #include "pin.h"
 #include "header.h"

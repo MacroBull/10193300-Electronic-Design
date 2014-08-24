@@ -74,7 +74,8 @@ void main_action(){
 }
 
 void initSysctl(){
-	BC16MSET;
+// 	BC16MSET;
+	BC12MSET;
 	WDT_DISABLE;
 }
 
