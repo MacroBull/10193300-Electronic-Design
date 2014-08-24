@@ -1,7 +1,6 @@
-10193300-Electronic-Design
-==========================
+101933000-电子设计 课程设计
+=====
 
-10193300-Electronic Design Work
 
 "光控电子琴"
 
@@ -30,3 +29,10 @@
 
   touch*.c 使用IO翻转时由于外部RC参数变化导致的门限翻转延时不同的简易方法来检测触摸输入, 硬件上使用P1IE.
   
+
+
+
+10193300-Electronic Design Work
+==========================
+*Light-control-keyboard*
+
